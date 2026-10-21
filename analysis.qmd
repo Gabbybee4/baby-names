@@ -1,0 +1,66 @@
+---
+title: "Popularity of the Name Gabriella Over Time"
+format: html
+execute:
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+library(tidyverse)
+
+# Read the baby names data created by download.py
+baby_names <- read_csv("ssa-baby-names.csv", show_col_types = FALSE)
+
+# Filter for female babies named Gabriella and plot counts by year
+baby_names |>
+  filter(name == "Gabriella", sex == "F") |>
+  ggplot(aes(x = year, y = count)) +
+  geom_line(color = "steelblue", linewidth = 1) +
+  labs(
+    title = "Babies Named Gabriella in the U.S. Over Time",
+    subtitle = "Social Security Administration baby names data",
+    x = "Year",
+    y = "Number of Babies",
+    caption = "Source: U.S. Social Security Administration"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+# Compare Gabriella and Gabrielle over the years where either name appears
+baby_names |>
+  filter(name %in% c("Gabriella", "Gabrielle"), sex == "F") |>
+  ggplot(aes(x = year, y = count, color = name)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Was Gabriella More Popular Than Gabrielle?",
+    subtitle = "Annual U.S. births for female babies named Gabriella vs. Gabrielle",
+    x = "Year",
+    y = "Number of Babies",
+    color = "Name",
+    caption = "Source: U.S. Social Security Administration"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+# Compare Gabriella and Gabriel across both boys (M) and girls (F)
+baby_names |>
+  filter(name %in% c("Gabriella", "Gabriel")) |>
+  ggplot(aes(x = year, y = count, color = name, linetype = sex)) +
+  geom_line(linewidth = 1) +
+  labs(
+    title = "Was Gabriella More Popular Than Gabriel Among Boys and Girls?",
+    subtitle = "Annual U.S. births for Gabriella and Gabriel by sex",
+    x = "Year",
+    y = "Number of Babies",
+    color = "Name",
+    linetype = "Sex",
+    caption = "Source: U.S. Social Security Administration"
+  ) +
+  theme_minimal()
+```
+
+
